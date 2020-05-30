@@ -1,17 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using BankIdService.Application.Configurations;
+using BankIdService.Application.Handlers;
+using BankIdService.Application.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace BankIdService
+namespace BankIdService.Api
 {
     public class Startup
     {
@@ -25,7 +23,16 @@ namespace BankIdService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var settings = Configuration.GetSection("BankIdSettings").Get<BankIdSettings>();
+
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IAuthHandler, AuthHandler>();
+            services.AddScoped<IBankIdService, Infrastructure.Services.BankIdService>();
+            services.AddHttpClient<IBankIdService, Infrastructure.Services.BankIdService>(s =>
+            {
+                s.BaseAddress = new Uri(settings.BaseUrl);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

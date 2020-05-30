@@ -1,6 +1,6 @@
 using System;
 
-namespace BankIdService
+namespace BankIdService.Api
 {
     public class WeatherForecast
     {

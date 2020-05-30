@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BankIdService.Infrastructure
+﻿namespace BankIdService.Infrastructure
 {
     public class Class1
     {

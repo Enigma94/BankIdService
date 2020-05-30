@@ -1,27 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AutoMapper;
+using BankIdService.Api.ApiModels;
+using BankIdService.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace BankIdService.Controllers
+namespace BankIdService.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class BankIdController : ControllerBase
     {
         private readonly ILogger<BankIdController> _logger;
+        private readonly IAuthHandler _authHandler;
+        private readonly IMapper _mapper;
 
-        public BankIdController(ILogger<BankIdController> logger)
+        public BankIdController(ILogger<BankIdController> logger, IAuthHandler authHandler, IMapper mapper)
         {
             _logger = logger;
+            _authHandler = authHandler;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Auth(string personalNumber)
+        public async Task<IActionResult> Auth(string personalNumber)
         {
-            return Ok();
+            if (personalNumber == null)
+                return BadRequest();
+
+            var result = await _authHandler.SendAuthRequest(personalNumber);
+
+            return Ok(_mapper.Map<AuthModelDto>(result.Payload));
         }
     }
 }
