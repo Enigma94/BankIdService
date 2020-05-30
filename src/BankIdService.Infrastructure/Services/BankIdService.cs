@@ -9,12 +9,10 @@ namespace BankIdService.Infrastructure.Services
 {
     public class BankIdService : IBankIdService
     {
-        private readonly HttpClient _httpClient;
         private readonly IMapper _mapper;
 
-        public BankIdService(HttpClient httpClient, IMapper mapper)
+        public BankIdService(IMapper mapper)
         {
-            _httpClient = httpClient;
             _mapper = mapper;
 
         }

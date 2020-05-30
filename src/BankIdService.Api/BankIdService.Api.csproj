@@ -4,5 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankIdService.Application\BankIdService.Application.csproj" />
+    <ProjectReference Include="..\BankIdService.Infrastructure\BankIdService.Infrastructure.csproj" />
+  </ItemGroup>
+
 
 </Project>
