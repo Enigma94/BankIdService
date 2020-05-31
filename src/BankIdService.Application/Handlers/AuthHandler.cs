@@ -7,15 +7,15 @@ namespace BankIdService.Application.Handlers
 {
     public class AuthHandler : IAuthHandler
     {
-        private readonly IBankIdService _bankIdService;
-        public AuthHandler(IBankIdService bankIdService)
+        private readonly IBankIdServiceHandler _bankIdService;
+        public AuthHandler(IBankIdServiceHandler bankIdService)
         {
             _bankIdService = bankIdService;
         }
 
-        public async Task<ActionResponse<AuthModel>> SendAuthRequest(string personalNumber = null)
+        public async Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel)
         {
-            return await _bankIdService.SendAuthRequest("123");
+            return await _bankIdService.SendAuthRequest(authRequestModel);
         }
 
     }

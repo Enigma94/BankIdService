@@ -2,8 +2,8 @@
 using AutoMapper;
 using BankIdService.Api.ApiModels;
 using BankIdService.Application.Interfaces;
+using BankIdService.Application.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BankIdService.Api.Controllers
 {
@@ -11,26 +11,31 @@ namespace BankIdService.Api.Controllers
     [Route("[controller]")]
     public class BankIdController : ControllerBase
     {
-        private readonly ILogger<BankIdController> _logger;
         private readonly IAuthHandler _authHandler;
         private readonly IMapper _mapper;
 
-        public BankIdController(ILogger<BankIdController> logger, IAuthHandler authHandler, IMapper mapper)
+        public BankIdController(IAuthHandler authHandler, IMapper mapper)
         {
-            _logger = logger;
             _authHandler = authHandler;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Auth(string personalNumber)
+        /// <summary>
+        /// Auth Request to bankId
+        /// </summary>
+        /// <param name="authRequestDto"></param>
+        /// <returns>A orderref and autostarttoken</returns>
+        /// <response code="400">Auth has already been requested</response>
+        /// <response code="200">Sucessfully started auth sequence</response>
+        [HttpPost]
+        public async Task<IActionResult> Auth([FromBody]AuthRequestDto authRequestDto)
         {
-            if (personalNumber == null)
+            if (authRequestDto == null)
                 return BadRequest();
 
-            var result = await _authHandler.SendAuthRequest(personalNumber);
+            var result = await _authHandler.SendAuthRequest(_mapper.Map<AuthRequestModel>(authRequestDto));
 
-            return Ok(_mapper.Map<AuthModelDto>(result.Payload));
+            return Ok(_mapper.Map<AuthResponseDto>(result.Payload));
         }
     }
 }

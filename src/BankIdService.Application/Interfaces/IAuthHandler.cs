@@ -6,6 +6,6 @@ namespace BankIdService.Application.Interfaces
 {
     public interface IAuthHandler
     {
-        Task<ActionResponse<AuthModel>> SendAuthRequest(string personalNumber = null);
+        Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel);
     }
 }

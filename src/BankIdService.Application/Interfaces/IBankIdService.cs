@@ -4,8 +4,8 @@ using BankIdService.Application.Responses;
 
 namespace BankIdService.Application.Interfaces
 {
-    public interface IBankIdService
+    public interface IBankIdServiceHandler
     {
-        Task<ActionResponse<AuthModel>> SendAuthRequest(string personalNumber);
+        Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel);
     }
 }

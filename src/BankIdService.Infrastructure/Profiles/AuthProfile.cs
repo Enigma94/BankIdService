@@ -2,11 +2,12 @@
 
 namespace BankIdService.Infrastructure.Profiles
 {
-    internal class AuthProfile : Profile
+    public class AuthProfile : Profile
     {
         public AuthProfile()
         {
-            CreateMap<Entities.AuthModel, Application.Models.AuthModel>();
+            CreateMap<Entities.AuthResponseModel, Application.Models.AuthResponseModel>().ReverseMap();
+            CreateMap<Entities.AuthRequestModel, Application.Models.AuthRequestModel>().ReverseMap();
         }
     }
 }
