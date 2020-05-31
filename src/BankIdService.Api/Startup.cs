@@ -35,18 +35,23 @@ namespace BankIdService.Api
 
             services.AddAutoMapper(
                 typeof(Profiles.AuthProfile),
-                typeof(Infrastructure.Profiles.AuthProfile)
+                typeof(Profiles.CollectProfile),
+                typeof(Infrastructure.Profiles.AuthProfile),
+                typeof(Infrastructure.Profiles.CollectProfile)
                 );
 
             services.AddControllers();
             services.AddScoped<IAuthHandler, AuthHandler>();
+            services.AddScoped<ICollectHandler, CollectHandler>();
             services.AddTransient<HttpCertificateHandler>();
+            services.AddTransient<HttpBankIdRequestHandler>();
 
             services.AddHttpClient<IBankIdServiceHandler, BankIdServiceHandler>(s =>
             {
                 s.BaseAddress = new Uri(bankIdSettings.BaseUrl);
             })
             .ConfigurePrimaryHttpMessageHandler<HttpCertificateHandler>()
+            .AddHttpMessageHandler<HttpBankIdRequestHandler>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(3));
 
             services.AddSwaggerGen(s =>

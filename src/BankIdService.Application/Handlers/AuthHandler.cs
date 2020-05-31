@@ -17,6 +17,5 @@ namespace BankIdService.Application.Handlers
         {
             return await _bankIdService.SendAuthRequest(authRequestModel);
         }
-
     }
 }

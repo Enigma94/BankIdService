@@ -27,6 +27,64 @@ namespace BankIdService.Infrastructure.Services
 
         }
 
+        public async Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel)
+        {
+            try
+            {
+                var response = await SendAsync<AuthRequestModel, AuthResponseModel>(authRequestModel, _settings.AuthUrl);
+
+                if (response != null)
+                    return new ActionResponse<AuthResponseModel>(true) { Payload = response };
+
+                return new ActionResponse<AuthResponseModel>(false);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.ToString());
+                throw;
+            }
+        }
+
+        public async Task<ActionResponse<CollectResponseModel>> SendCollectRequest(string orderRef)
+        {
+            try
+            {
+                var response = await SendAsync<object, CollectResponseModel>(new { orderRef }, _settings.CollectUrl);
+
+                if (response != null)
+                    return new ActionResponse<CollectResponseModel>(true) { Payload = response };
+
+                return new ActionResponse<CollectResponseModel>(false);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.ToString());
+                throw;
+            }
+        }
+
+        private async Task<U> SendAsync<T, U>(T requestModel, string url)
+        {
+            var request = CreateRequest(requestModel, url);
+            var response = await _httpClient.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            if (response.IsSuccessStatusCode)
+            {
+                var derserializedContent = JsonSerializer.Deserialize<U>(content, options);
+                var mapped = _mapper.Map<U>(derserializedContent);
+
+                return mapped;
+            }
+
+            return default;
+        }
+
         private HttpRequestMessage CreateRequest<T>(T content, string endpoint)
         {
             var options = new JsonSerializerOptions
@@ -38,37 +96,6 @@ namespace BankIdService.Infrastructure.Services
             {
                 Content = new StringContent(JsonSerializer.Serialize(content, options))
             };
-        }
-
-        public async Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel)
-        {
-            try
-            {
-                var request = CreateRequest(authRequestModel, _settings.AuthUrl);
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json") { CharSet = "" };
-                var response = await _httpClient.SendAsync(request);
-                var content = await response.Content.ReadAsStringAsync();
-
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var entityAuthModel = JsonSerializer.Deserialize<Entities.AuthResponseModel>(content, options);
-                    var mapped = _mapper.Map<AuthResponseModel>(entityAuthModel);
-
-                    return new ActionResponse<AuthResponseModel>(true) { Payload = mapped };
-                }
-
-                return new ActionResponse<AuthResponseModel>(false);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.ToString());
-                throw;
-            }
         }
     }
 }

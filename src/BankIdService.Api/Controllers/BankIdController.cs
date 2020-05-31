@@ -11,13 +11,15 @@ namespace BankIdService.Api.Controllers
     [Route("[controller]")]
     public class BankIdController : ControllerBase
     {
-        private readonly IAuthHandler _authHandler;
         private readonly IMapper _mapper;
+        private readonly IAuthHandler _authHandler;
+        private readonly ICollectHandler _collectHandler;
 
-        public BankIdController(IAuthHandler authHandler, IMapper mapper)
+        public BankIdController(IMapper mapper, IAuthHandler authHandler, ICollectHandler collectHandler)
         {
-            _authHandler = authHandler;
             _mapper = mapper;
+            _authHandler = authHandler;
+            _collectHandler = collectHandler;
         }
 
         /// <summary>
@@ -36,6 +38,18 @@ namespace BankIdService.Api.Controllers
             var result = await _authHandler.SendAuthRequest(_mapper.Map<AuthRequestModel>(authRequestDto));
 
             return Ok(_mapper.Map<AuthResponseDto>(result.Payload));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Collect(string orderRef)
+        {
+            if (string.IsNullOrEmpty(orderRef))
+                return BadRequest("orderref cannot be empty");
+
+            var result = await _collectHandler.SendCollectRequest(orderRef);
+
+            return Ok(_mapper.Map<CollectResponseDto>(result.Payload));
+
         }
     }
 }
