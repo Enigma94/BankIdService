@@ -26,16 +26,16 @@ namespace BankIdService.Infrastructure.Services
 
         }
 
-        public async Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel)
+        public async Task<AuthResponseModel> SendAuthRequest(AuthRequestModel authRequestModel)
         {
             try
             {
                 var response = await SendAsync<AuthRequestModel, AuthResponseModel>(authRequestModel, _settings.AuthUrl);
 
                 if (response != null)
-                    return new ActionResponse<AuthResponseModel>(true) { Payload = response };
+                    return response;
 
-                return new ActionResponse<AuthResponseModel>(false);
+                return null;
             }
             catch (Exception ex)
             {
@@ -44,16 +44,16 @@ namespace BankIdService.Infrastructure.Services
             }
         }
 
-        public async Task<ActionResponse<CollectResponseModel>> SendCollectRequest(string orderRef)
+        public async Task<CollectResponseModel> SendCollectRequest(string orderRef)
         {
             try
             {
                 var response = await SendAsync<object, CollectResponseModel>(new { orderRef }, _settings.CollectUrl);
 
                 if (response != null)
-                    return new ActionResponse<CollectResponseModel>(true) { Payload = response };
+                    return response;
 
-                return new ActionResponse<CollectResponseModel>(false);
+                return null;
             }
             catch (Exception ex)
             {

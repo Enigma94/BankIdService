@@ -15,7 +15,9 @@ namespace BankIdService.Application.Handlers
 
         public async Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel)
         {
-            return await _bankIdService.SendAuthRequest(authRequestModel);
+            var result = await _bankIdService.SendAuthRequest(authRequestModel);
+
+            return new ActionResponse<AuthResponseModel>(true) { Payload = result };
         }
     }
 }

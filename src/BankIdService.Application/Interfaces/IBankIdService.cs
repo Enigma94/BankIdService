@@ -6,7 +6,7 @@ namespace BankIdService.Application.Interfaces
 {
     public interface IBankIdServiceHandler
     {
-        Task<ActionResponse<AuthResponseModel>> SendAuthRequest(AuthRequestModel authRequestModel);
-        Task<ActionResponse<CollectResponseModel>> SendCollectRequest(string orderRef);
+        Task<AuthResponseModel> SendAuthRequest(AuthRequestModel authRequestModel);
+        Task<CollectResponseModel> SendCollectRequest(string orderRef);
     }
 }

@@ -9,6 +9,7 @@ namespace BankIdService.Infrastructure.Profiles
             CreateMap<Entities.CollectResponseModel, Application.Models.CollectResponseModel>()
                 .ForMember(s => s.OrderRef, f => f.MapFrom(c => c.OrderRef))
                 .ForMember(s => s.Status, f => f.MapFrom(c => c.Status))
+                .ForMember(s => s.HintCode, f => f.MapFrom(c => c.HintCode))
                 .ForMember(s => s.Name, f => f.MapFrom(c => c.CompletionData.User.Name))
                 .ForMember(s => s.Surname, f => f.MapFrom(c => c.CompletionData.User.Surname))
                 .ForMember(s => s.PersonalNumber, f => f.MapFrom(c => c.CompletionData.User.PersonalNumber))

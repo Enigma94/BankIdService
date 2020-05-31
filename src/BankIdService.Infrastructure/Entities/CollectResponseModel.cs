@@ -4,6 +4,7 @@
     {
         public string OrderRef { get; set; }
         public string Status { get; set; }
+        public string HintCode { get; set; }
         public Completiondata CompletionData { get; set; }
     }
 
