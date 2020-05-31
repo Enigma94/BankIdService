@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BankIdService.Infrastructure.Entities
+﻿namespace BankIdService.Infrastructure.Entities
 {
     public class AuthRequestModel
     {

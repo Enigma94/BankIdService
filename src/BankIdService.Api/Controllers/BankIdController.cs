@@ -28,7 +28,7 @@ namespace BankIdService.Api.Controllers
         /// <response code="400">Auth has already been requested</response>
         /// <response code="200">Sucessfully started auth sequence</response>
         [HttpPost]
-        public async Task<IActionResult> Auth([FromBody]AuthRequestDto authRequestDto)
+        public async Task<IActionResult> Auth([FromBody] AuthRequestDto authRequestDto)
         {
             if (authRequestDto == null)
                 return BadRequest();

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using AutoMapper.Configuration;
 using BankIdService.Application.Configurations;
 using Microsoft.Extensions.Options;
 
@@ -18,7 +14,7 @@ namespace BankIdService.Api.HttpClientExtensions
             _settings = settings.Value;
 
             var certStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-            
+
             certStore.Open(OpenFlags.ReadOnly);
             var certCollection = certStore.Certificates.Find(
                 X509FindType.FindByThumbprint,
@@ -34,7 +30,7 @@ namespace BankIdService.Api.HttpClientExtensions
             ClientCertificates.Add(certificate);
 
             ServerCertificateCustomValidationCallback = DangerousAcceptAnyServerCertificateValidator;
-            
+
         }
     }
 }

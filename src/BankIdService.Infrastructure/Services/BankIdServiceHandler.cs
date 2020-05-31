@@ -35,7 +35,7 @@ namespace BankIdService.Infrastructure.Services
             };
 
             return new HttpRequestMessage(HttpMethod.Post, endpoint)
-            {               
+            {
                 Content = new StringContent(JsonSerializer.Serialize(content, options))
             };
         }
