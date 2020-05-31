@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -77,9 +76,7 @@ namespace BankIdService.Infrastructure.Services
             if (response.IsSuccessStatusCode)
             {
                 var derserializedContent = JsonSerializer.Deserialize<U>(content, options);
-                var mapped = _mapper.Map<U>(derserializedContent);
-
-                return mapped;
+                return _mapper.Map<U>(derserializedContent);
             }
 
             return default;
