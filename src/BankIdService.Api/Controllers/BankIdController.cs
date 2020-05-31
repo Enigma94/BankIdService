@@ -23,7 +23,7 @@ namespace BankIdService.Api.Controllers
         }
 
         /// <summary>
-        /// Auth Request to bankId
+        /// Auth Request to BankId
         /// </summary>
         /// <param name="authRequestDto"></param>
         /// <returns>A orderref and autostarttoken</returns>
@@ -40,6 +40,13 @@ namespace BankIdService.Api.Controllers
             return Ok(_mapper.Map<AuthResponseDto>(result.Payload));
         }
 
+        /// <summary>
+        /// Collect request to BankId
+        /// </summary>
+        /// <param name="orderRef">From auth request</param>
+        /// <returns>Completiondata and status of current collect</returns>
+        /// <response code="400">Orderref is null</response>
+        /// <response code="200">Request was successful. returns data</response>
         [HttpGet]
         public async Task<IActionResult> Collect(string orderRef)
         {
